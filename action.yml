@@ -77,7 +77,7 @@ runs:
           -d "{\"repository\":\"${GITHUB_REPOSITORY}\",\"action\":\"${GITHUB_ACTION_REPOSITORY}\"}" \
           "https://actions.enforce.dev/actions/v1/record" >/dev/null 2>&1 || true
     - name: Set the ruby version
-      uses: ruby/setup-ruby@3ff19f5e2baf30647122352b96108b1fbe250c64
+      uses: chainguard-actions/ruby-setup-ruby@648306434a7ab08fbaff2de89dda3d24f837a077
       with:
         ruby-version: 3.2
         bundler-cache: ${{ inputs.bundler-cache }}
