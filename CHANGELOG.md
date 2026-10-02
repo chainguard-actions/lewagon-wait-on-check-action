@@ -1,0 +1,84 @@
+# Changelog
+
+## Unreleased
+
+## v1.9.1 - 2026-08-07
+
+### Added
+
+- Add a step to install dependencies without caching when `bundler-cache` is false
+
+## v1.9.0 - 2026-07-26
+
+### Added
+
+- Add `bundler-cache` option to toggle the `ruby/setup-ruby` cache
+
+## v1.8.1 - 2026-07-02
+
+### Fixed
+
+- Fix `wait-for-duplicates` duplication across check suites
+
+## v1.8.0 - 2026-06-09
+
+### Added
+
+- Add a `wait-for-duplicates` option to require every check with a duplicate name to succeed
+
+## v1.7.0 - 2026-04-14
+
+### Fixed
+
+- Fix the failure exit codes
+
+## v1.6.1 - 2026-04-06
+
+### Added
+
+- Pin the `ruby/setup-ruby` version
+
+## v1.6.0 - 2026-03-29
+
+### Added
+
+- Add `checks-discovery-timeout` option
+
+## v1.5.0 - 2026-01-25
+
+### Added
+
+- Add `fail-on-no-checks` option
+
+### Fixed
+
+- Bump `rexml` to 3.4.2
+
+## v1.4.1 - 2025-09-21
+
+### Fixed
+
+- Linux ARM64 support
+
+## v1.4.0 - 2025-06-27
+
+### Added
+
+- Add class docs
+- Add `frozen_string_literal` comments
+
+### Removed
+
+- Remove OpenStruct instances
+- Remove Double quotes
+- Remove Double assertions
+- Remove `allow_any` uses
+
+### Fixed
+
+- Fix spelling mistakes
+- Fix CI gem caching
+- Convert `config.verbose` to a boolean
+- Bump `rexml` to 3.3.9
+
+## v1.3.4 - 2024-04-04

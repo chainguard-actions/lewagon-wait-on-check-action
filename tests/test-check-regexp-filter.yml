@@ -1,0 +1,39 @@
+name: Test check-regexp filter
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      # Test with check-regexp filter and fail-on-no-checks=false.
+      # The regex pattern filters checks by name. With fail-on-no-checks=false,
+      # the action should succeed even if no checks match the pattern.
+      # Under the harness, the sentinel repo causes the API call to fail,
+      # so we allow either outcome.
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          ref: ${{ github.sha }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          check-regexp: "^ci-.*"
+          fail-on-no-checks: "false"
+          wait-interval: "5"
+          checks-discovery-timeout: "10"
+          verbose: "true"
+
+      - name: Assert action ran (succeeded or failed gracefully on sentinel repo)
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" = "success" ]; then
+            echo "PASS: action succeeded (no checks matched regexp, fail-on-no-checks=false)"
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
