@@ -6,9 +6,9 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 
 ## Versions
 
-| Version | Tag | Upstream commit |
-|---------|-----|-----------------|
-| v1.9.1 | [`v1.9.1`](https://github.com/chainguard-actions/lewagon-wait-on-check-action/tree/v1.9.1) | [`3697690`](https://github.com/lewagon/wait-on-check-action/commit/369769072fe522a3a8a85c03c96af1e5242a1994) |
+| Version | Tag | Upstream commit | Hardening report |
+|---------|-----|-----------------|------------------|
+| v1.9.1 | [`v1.9.1`](https://github.com/chainguard-actions/lewagon-wait-on-check-action/tree/v1.9.1) | [`3697690`](https://github.com/lewagon/wait-on-check-action/commit/369769072fe522a3a8a85c03c96af1e5242a1994) | [`HARDENING.md`](https://github.com/chainguard-actions/lewagon-wait-on-check-action/blob/v1.9.1/HARDENING.md) |
 
 ## Privacy
 
