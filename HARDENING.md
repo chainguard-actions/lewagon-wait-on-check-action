@@ -4,7 +4,7 @@
 
 > This file was generated automatically by the hardening agent.
 
-**Policy SHA:** `d636be7e43ef829af6e853da6b3c7566db9f72fe`
+**Policy SHA:** `374911c4be584df24e6da57af2d990570ef0f859`
 
 **Test Policy SHA:** `843adf9e4b8f85d0c08b27b9d0b09dd094b54702`
 
@@ -14,31 +14,64 @@ Action **lewagon--wait-on-check-action/v1.9.1** was hardened automatically. 1 fi
 
 ## Findings Fixed
 
-### unpinned-uses (severity: high)
+### prior-fix (severity: high)
 
-The composite action at .github/actions/install/action.yaml references two actions by mutable version tags instead of full 40-character commit SHAs. This exposes the action to supply-chain attacks where a tag could be silently moved to point to malicious code.
+Carried forward from this version's previous harden, which fixed it; fix it again unless the code no longer has the problem. The previous harden changed action.yml without recording a finding for it, and this analysis reported nothing there. Re-apply its security changes unless the code no longer needs them. The previous patch:
+```diff
+diff --git a/action.yml b/action.yml
+index ee6d673..cdeba55 100644
+--- a/action.yml
++++ b/action.yml
+@@ -56,19 +56,34 @@ inputs:
+     description: "Enable Bundler cache in ruby/setup-ruby"
+     required: false
+     default: "true"
+-
+ runs:
+   using: "composite"
+   steps:
+     - name: Set the ruby version
+       uses: ruby/setup-ruby@3ff19f5e2baf30647122352b96108b1fbe250c64
+       with:
+         ruby-version: 3.2
+         bundler-cache: ${{ inputs.bundler-cache }}
+         working-directory: ${{ github.action_path }}
+       env:
+         BUNDLE_PATH: "${{ github.action_path }}/vendor/bundle"
+-
+     - name: Install dependencies without caching
+       if: inputs.bundler-cache == 'false'
+       run: bundle install
+@@ -76,7 +91,6 @@ runs:
+       shell: bash
+       env:
+         BUNDLE_PATH: "${{ github.action_path }}/vendor/bundle"
+-
+     - run: bundle exec entrypoint.rb
+       working-directory: ${{ github.action_path }}
+       shell: bash
+@@ -95,7 +109,6 @@ runs:
+         CHECKS_DISCOVERY_TIMEOUT: ${{ inputs.checks-discovery-timeout }}
+         WAIT_FOR_DUPLICATES: ${{ inputs.wait-for-duplicates }}
+         BUNDLE_PATH: "${{ github.action_path }}/vendor/bundle"
+-
+ branding:
+   icon: "check-circle"
+   color: "green"
 
-Failing references:
-- `uses: actions/checkout@v4` (line 8) — should be pinned to a full SHA
-- `uses: ruby/setup-ruby@v1` (line 11) — should be pinned to a full SHA
-
-Example fix: `uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4`
+```
 
 Locations:
 
-- `.github/actions/install/action.yaml:8`
-- `.github/actions/install/action.yaml:11`
+- `action.yml`
 
 ## Iteration Notes
 
 ### Iteration 1
 
-**Fixes applied:** unpinned-uses
+**Fixes applied:** prior-fix
 
 **Notes:**
 
-Pinned both mutable tag references in hardened/action/.github/actions/install/action.yaml to full commit SHAs:
-- actions/checkout@v4 → actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-- ruby/setup-ruby@v1 → ruby/setup-ruby@14594264cd68ce8a2345dd349bc3d138a4ef85c8 # v1
-The human-readable version tags are preserved as inline comments for readability.
+The previous harden's diff only deleted blank lines in action.yml. The file is already secure: ruby/setup-ruby is pinned to the full SHA 3ff19f5e2baf30647122352b96108b1fbe250c64, and all inputs are passed through env: rather than written into run: scripts. No edits were needed, so the file was left unchanged.
 
